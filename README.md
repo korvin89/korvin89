@@ -1,4 +1,5 @@
-### Hi there 👋
+<h1 align="center">Hi 👋, I'm korvin89</h1>
+<p align="center"><img src="https://github-readme-stats.vercel.app/api/?username=korvin89&show_icons=true&locale=en&show=reviews,prs_merged" alt="korvin89 github stats"/></p>
 
 <!--
 **korvin89/korvin89** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
