@@ -1,4 +1,4 @@
-### Hi 👋, I'm korvin89
+### Hi 👋, I'm Alaev Evgenii
 
 I'm a frontend developer in [DataLens team](https://datalens.tech/) and one of the core contributors in [@gravity-ui/uikit](https://github.com/gravity-ui/uikit) and [@gravity-ui/chartkit](https://github.com/gravity-ui/chartkit).
 
