@@ -1,0 +1,10 @@
+/* Arial has the same metrics as Helvetica and Liberation Sans, so text measured in CI
+   takes the same space on any viewer's machine. */
+.g-root {
+    --g-font-family-sans: Arial, Helvetica, 'Liberation Sans', sans-serif;
+}
+
+body {
+    margin: 0;
+    background: transparent;
+}
