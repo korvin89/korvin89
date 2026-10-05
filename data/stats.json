@@ -1,6 +1,6 @@
 {
   "mergedPrs": {
-    "total": 462,
+    "total": 464,
     "quarters": [
       "2022 Q1",
       "2022 Q2",
@@ -112,13 +112,13 @@
   "authoredVsReviewed": [
     {
       "repo": "uikit",
-      "authored": 98,
-      "reviewed": 748
+      "authored": 99,
+      "reviewed": 751
     },
     {
       "repo": "charts",
-      "authored": 134,
-      "reviewed": 311
+      "authored": 135,
+      "reviewed": 313
     },
     {
       "repo": "chartkit",
@@ -167,7 +167,7 @@
         36759,
         21241,
         19819,
-        26557,
+        27669,
         21785,
         24052,
         23963,
