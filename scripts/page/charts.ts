@@ -114,7 +114,15 @@ function getNpmDownloadsChart(stats: Stats, theme: Theme): ChartData {
                     name: repo,
                     color: getRepoColor(repo, theme),
                     lineWidth: 2,
-                    data: values.map((y, index) => ({x: timestamps[index], y})),
+                    data: values.map((y, index) => ({
+                        x: timestamps[index],
+                        y,
+                        // Show the latest value next to the last point of the line
+                        annotation:
+                            index === values.length - 1
+                                ? {label: {text: `${Math.round(y / 1000)}K`}}
+                                : undefined,
+                    })),
                 };
             }),
         },
