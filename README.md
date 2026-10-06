@@ -1,6 +1,6 @@
 ### Hi 👋, I'm Evgenii Alaev
 
-I'm a frontend developer on the [DataLens](https://datalens.tech/) team. I wrote the charting libraries of [Gravity UI](https://gravity-ui.com/) and help maintain its component library.
+I'm a frontend engineer on the [DataLens](https://datalens.tech/) team. I wrote the charting libraries of [Gravity UI](https://gravity-ui.com/) and help maintain its component library.
 
 - **[@gravity-ui/uikit](https://github.com/gravity-ui/uikit)** — core contributor and reviewer of the base React component library
 - **[@gravity-ui/charts](https://github.com/gravity-ui/charts)** — author of the React charting library that replaced Highcharts in DataLens · [docs](https://gravity-ui.github.io/charts/) · [playground](https://korvin89.github.io/charts-playground/)
