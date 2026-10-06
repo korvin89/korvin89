@@ -6,8 +6,6 @@ I'm a frontend engineer on the [DataLens](https://datalens.tech/) team. I wrote 
 - **[@gravity-ui/charts](https://github.com/gravity-ui/charts)** — author of the React charting library that replaced Highcharts in DataLens · [docs](https://gravity-ui.github.io/charts/) · [playground](https://korvin89.github.io/charts-playground/)
 - **[@gravity-ui/chartkit](https://github.com/gravity-ui/chartkit)** — author of the plugin-based React component that renders charts from multiple charting libraries
 
-I also contribute to [dashkit](https://github.com/gravity-ui/dashkit), [date-utils](https://github.com/gravity-ui/date-utils) and other Gravity UI packages.
-
 ----
 
 <picture>
