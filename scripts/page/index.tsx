@@ -19,7 +19,7 @@ declare global {
 
 // Renders every chart for the given theme and resolves with standalone SVG markup by chart name.
 window.renderCharts = (stats, theme) => {
-    const specs = getChartSpecs(stats, theme);
+    const specs = getChartSpecs(stats);
     const container = document.getElementById('root') as HTMLElement;
     const root = createRoot(container);
 

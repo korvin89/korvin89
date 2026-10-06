@@ -3,10 +3,6 @@ import type {ChartData} from '@gravity-ui/charts';
 export type Theme = 'light' | 'dark';
 
 export interface Stats {
-    mergedPrs: {
-        quarters: string[];
-        series: Record<string, number[]>;
-    };
     authoredVsReviewed: {repo: string; authored: number; reviewed: number}[];
     npmDownloads: {
         months: string[];
@@ -21,7 +17,6 @@ export interface ChartSpec {
     data: ChartData;
 }
 
-const FULL_WIDTH = 840;
 const HALF_WIDTH = 412;
 
 // One color per repository in every chart, taken from the default @gravity-ui/charts palette.
@@ -30,75 +25,62 @@ const REPO_COLORS: Record<string, string> = {
     charts: '#FF3D64',
     chartkit: '#0FA08D',
 };
-const OTHER_COLOR: Record<Theme, string> = {
-    light: '#B3B8C0',
-    dark: '#5E646E',
-};
 
 const TITLE_STYLE = {fontSize: '15px', fontWeight: 600};
 const CHART_OPTIONS = {margin: {top: 4, right: 12, bottom: 12, left: 4}};
 
-// '2024 Q3' -> timestamp of the middle of the quarter, so that year ticks fall between the bars
-function getQuarterTimestamp(quarter: string) {
-    const [year, index] = quarter.split(' Q').map(Number);
+// The category axis draws the first category at the bottom, so the list goes bottom-up
+const REPOS = ['uikit', 'chartkit', 'charts'];
+const REVIEWED_OPACITY = 0.35;
+const DATA_LABEL_STYLE = {fontSize: '12px'};
 
-    return Date.UTC(year, (index - 1) * 3 + 1, 15);
-}
-
-function getRepoColor(repo: string, theme: Theme) {
-    return REPO_COLORS[repo] ?? OTHER_COLOR[theme];
-}
-
-function getMergedPrsChart(stats: Stats, theme: Theme): ChartData {
-    const {quarters, series} = stats.mergedPrs;
-    const timestamps = quarters.map(getQuarterTimestamp);
+function getAuthoredVsReviewedChart(stats: Stats): ChartData {
+    const rows = REPOS.map((repo) => stats.authoredVsReviewed.find((item) => item.repo === repo)!);
+    const authored = rows.reduce((sum, row) => sum + row.authored, 0);
+    const reviewed = rows.reduce((sum, row) => sum + row.reviewed, 0);
+    const getDataLabels = (suffix: string) => ({
+        enabled: true,
+        style: DATA_LABEL_STYLE,
+        format: {type: 'custom' as const, formatter: ({value}: {value: unknown}) => `${value} ${suffix}`},
+    });
 
     return {
         chart: CHART_OPTIONS,
-        title: {text: 'My merged pull requests in Gravity UI by quarter', style: TITLE_STYLE},
-        series: {
-            data: Object.entries(series).map(([repo, values]) => ({
-                type: 'bar-x',
-                stacking: 'normal',
-                name: repo,
-                color: getRepoColor(repo, theme),
-                data: values.map((y, index) => ({x: timestamps[index], y})),
-            })),
+        title: {
+            text: `${reviewed.toLocaleString('en-US')} PRs reviewed · ${authored} authored`,
+            style: TITLE_STYLE,
         },
-        xAxis: {type: 'datetime', labels: {dateFormat: 'YYYY'}, ticks: {interval: 160}},
-        legend: {enabled: true},
+        series: {
+            // Each bar takes its repository color, reviewed bars are a lighter shade of it
+            data: [
+                {
+                    type: 'bar-y',
+                    name: 'authored',
+                    dataLabels: getDataLabels('authored'),
+                    data: rows.map(({repo, authored: x}) => ({y: repo, x, color: REPO_COLORS[repo]})),
+                },
+                {
+                    type: 'bar-y',
+                    name: 'reviewed',
+                    dataLabels: getDataLabels('reviewed'),
+                    data: rows.map(({repo, reviewed: x}) => ({
+                        y: repo,
+                        x,
+                        color: REPO_COLORS[repo],
+                        opacity: REVIEWED_OPACITY,
+                    })),
+                },
+            ],
+            options: {'bar-y': {barMaxWidth: 16}},
+        },
+        xAxis: {maxPadding: 0.3, labels: {enabled: false}, grid: {enabled: false}},
+        yAxis: [{type: 'category', categories: REPOS}],
+        legend: {enabled: false},
         tooltip: {enabled: false},
     };
 }
 
-function getAuthoredVsReviewedChart(stats: Stats, theme: Theme): ChartData {
-    const categories = ['Reviewed', 'Opened'];
-    const firstYear = stats.mergedPrs.quarters[0].split(' ')[0];
-
-    return {
-        chart: CHART_OPTIONS,
-        title: {text: `Merged PRs since ${firstYear}: opened vs reviewed`, style: TITLE_STYLE},
-        series: {
-            data: stats.authoredVsReviewed.map(({repo, authored, reviewed}) => ({
-                type: 'bar-y',
-                name: repo,
-                color: getRepoColor(repo, theme),
-                dataLabels: {enabled: true},
-                data: [
-                    {y: categories[0], x: reviewed},
-                    {y: categories[1], x: authored},
-                ],
-            })),
-            options: {'bar-y': {barMaxWidth: 20}},
-        },
-        xAxis: {maxPadding: 0.1},
-        yAxis: [{type: 'category', categories}],
-        legend: {enabled: true},
-        tooltip: {enabled: false},
-    };
-}
-
-function getNpmDownloadsChart(stats: Stats, theme: Theme): ChartData {
+function getNpmDownloadsChart(stats: Stats): ChartData {
     const {months, series} = stats.npmDownloads;
     const timestamps = months.map((month) => Date.parse(`${month}-01T00:00:00Z`));
 
@@ -108,21 +90,16 @@ function getNpmDownloadsChart(stats: Stats, theme: Theme): ChartData {
         series: {
             data: Object.entries(series).map(([packageName, values]) => {
                 const repo = packageName.split('/')[1];
+                const latest = Math.round(values[values.length - 1] / 1000);
 
                 return {
                     type: 'line',
-                    name: repo,
-                    color: getRepoColor(repo, theme),
+                    // The latest values of charts and chartkit are close, so labels at the line ends
+                    // would overlap; the legend shows them instead.
+                    name: `${repo} · ${latest}K`,
+                    color: REPO_COLORS[repo],
                     lineWidth: 2,
-                    data: values.map((y, index) => ({
-                        x: timestamps[index],
-                        y,
-                        // Show the latest value next to the last point of the line
-                        annotation:
-                            index === values.length - 1
-                                ? {label: {text: `${Math.round(y / 1000)}K`}}
-                                : undefined,
-                    })),
+                    data: values.map((y, index) => ({x: timestamps[index], y})),
                 };
             }),
         },
@@ -133,25 +110,19 @@ function getNpmDownloadsChart(stats: Stats, theme: Theme): ChartData {
     };
 }
 
-export function getChartSpecs(stats: Stats, theme: Theme): ChartSpec[] {
+export function getChartSpecs(stats: Stats): ChartSpec[] {
     return [
-        {
-            name: 'merged-prs',
-            width: FULL_WIDTH,
-            height: 300,
-            data: getMergedPrsChart(stats, theme),
-        },
         {
             name: 'authored-vs-reviewed',
             width: HALF_WIDTH,
             height: 280,
-            data: getAuthoredVsReviewedChart(stats, theme),
+            data: getAuthoredVsReviewedChart(stats),
         },
         {
             name: 'npm-downloads',
             width: HALF_WIDTH,
             height: 280,
-            data: getNpmDownloadsChart(stats, theme),
+            data: getNpmDownloadsChart(stats),
         },
     ];
 }
