@@ -75,7 +75,14 @@ function getAuthoredVsReviewedChart(stats: Stats): ChartData {
             ],
             options: {'bar-y': {barMaxWidth: 16}},
         },
-        xAxis: {maxPadding: 0.3, labels: {enabled: false}, grid: {enabled: false}},
+        // The title takes the place of the date labels in the neighbouring chart,
+        // so both plots end at the same height in the README.
+        xAxis: {
+            maxPadding: 0.3,
+            labels: {enabled: false},
+            grid: {enabled: false},
+            title: {text: 'merged pull requests', style: {fontSize: '11px'}, margin: 10},
+        },
         yAxis: [{type: 'category', categories: repos}],
         legend: {enabled: false},
         tooltip: {enabled: false},
@@ -84,8 +91,7 @@ function getAuthoredVsReviewedChart(stats: Stats): ChartData {
 
 function getNpmDownloadsChart(stats: Stats): ChartData {
     const {months, series} = stats.npmDownloads;
-    // A monthly total belongs to the middle of its month. This also keeps the first tick off the
-    // left edge, where its label would be cut to an ellipsis with the y-axis labels hidden.
+    // A monthly total belongs to the middle of its month
     const timestamps = months.map((month) => Date.parse(`${month}-15T00:00:00Z`));
 
     return {
@@ -116,9 +122,7 @@ function getNpmDownloadsChart(stats: Stats): ChartData {
             }),
         },
         xAxis: {type: 'datetime', startOnTick: false, endOnTick: false},
-        // chartkit depends on charts, so the stack height double counts installs
-        // and the axis is hidden to keep that sum from reading as a total.
-        yAxis: [{labels: {enabled: false}, grid: {enabled: false}}],
+        yAxis: [{labels: {numberFormat: {unit: 'k', precision: 0}}}],
         legend: {enabled: false},
         tooltip: {enabled: false},
     };
