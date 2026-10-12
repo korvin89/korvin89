@@ -2,13 +2,13 @@
   "authoredVsReviewed": [
     {
       "repo": "uikit",
-      "authored": 109,
-      "reviewed": 764
+      "authored": 113,
+      "reviewed": 769
     },
     {
       "repo": "charts",
       "authored": 135,
-      "reviewed": 321
+      "reviewed": 327
     },
     {
       "repo": "chartkit",
