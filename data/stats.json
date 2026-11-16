@@ -2,18 +2,18 @@
   "authoredVsReviewed": [
     {
       "repo": "uikit",
-      "authored": 116,
-      "reviewed": 773
+      "authored": 118,
+      "reviewed": 775
     },
     {
       "repo": "charts",
-      "authored": 150,
-      "reviewed": 349
+      "authored": 151,
+      "reviewed": 355
     },
     {
       "repo": "chartkit",
       "authored": 178,
-      "reviewed": 347
+      "reviewed": 350
     }
   ],
   "npmDownloads": {
@@ -68,7 +68,7 @@
         95192,
         137250,
         97800,
-        93621
+        102355
       ],
       "@gravity-ui/charts": [
         361,
@@ -94,7 +94,7 @@
         39072,
         43479,
         46829,
-        36250
+        38260
       ],
       "@gravity-ui/chartkit": [
         5430,
@@ -120,7 +120,7 @@
         40500,
         42096,
         44933,
-        32729
+        34612
       ]
     }
   }
