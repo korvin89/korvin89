@@ -3,17 +3,17 @@
     {
       "repo": "uikit",
       "authored": 118,
-      "reviewed": 775
+      "reviewed": 781
     },
     {
       "repo": "charts",
       "authored": 151,
-      "reviewed": 355
+      "reviewed": 359
     },
     {
       "repo": "chartkit",
       "authored": 178,
-      "reviewed": 350
+      "reviewed": 351
     }
   ],
   "npmDownloads": {
@@ -67,7 +67,7 @@
         78069,
         95192,
         137250,
-        97800,
+        106412,
         102355
       ],
       "@gravity-ui/charts": [
@@ -93,7 +93,7 @@
         35858,
         39072,
         43479,
-        46829,
+        50908,
         38260
       ],
       "@gravity-ui/chartkit": [
@@ -119,7 +119,7 @@
         36509,
         40500,
         42096,
-        44933,
+        48685,
         34612
       ]
     }
